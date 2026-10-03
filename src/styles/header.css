@@ -1,11 +1,11 @@
 .header {
     background: var(--bg-l);
-    padding: 10px 0;
 
     .container {
         display: flex;
         justify-content: center;
         align-items: center;
+        flex-wrap: wrap;
     }
 }
 
@@ -16,6 +16,7 @@
     align-items: center;
     gap: 16px;
     list-style: none;
+    flex-wrap: wrap;
 }
 
 .header__link {
