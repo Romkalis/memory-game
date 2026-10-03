@@ -1,15 +1,19 @@
+@import 'styles/header.css';
+@import 'styles/game.css';
+@import 'styles/footer.css';
+
 :root {
   --text: #58634b;
   --text-h: #28321f;
   --bg: #fbfdf7;
   --border: #dce8ca;
-  --code-bg: #eff5e5;
+  --bg-l: #eff5e5;
   --accent: #729d2b;
   --accent-bg: rgba(139, 190, 58, 0.14);
   --accent-border: rgba(114, 157, 43, 0.55);
   --social-bg: rgba(239, 245, 229, 0.7);
   --shadow:
-    rgba(40, 50, 31, 0.12) 0 10px 15px -3px, rgba(40, 50, 31, 0.06) 0 4px 6px -2px;
+    rgba(40, 50, 31, 0.12) 0 10px 15px -3px, rgba(59, 62, 56, 0.06) 0 4px 6px -2px;
 
   --sans: 'Roboto', sans-serif;
   --heading: 'Roboto', sans-serif;
@@ -62,36 +66,9 @@ p {
   margin: 0;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
-}
-
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
-
-  &:hover {
-    border-color: var(--accent-border);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
+.container {
+  width: 100%;
+  max-width: 1280px;
+  padding: 0 clamp(16px, 2vw, 40px);
+  margin: auto;
 }

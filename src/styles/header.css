@@ -1,3 +1,31 @@
 .header {
-    
+    background: var(--bg-l);
+    padding: 10px 0;
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.header__list {
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    list-style: none;
+}
+
+.header__link {
+    border: none;
+    background: none;
+    font-weight: 700;
+    padding: 10px;
+    transition: all 0.4s ease;
+
+    &:hover {
+        transform: scale(1.1)
+    }
 }
