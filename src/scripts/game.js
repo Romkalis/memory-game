@@ -2,6 +2,7 @@ import { shuffle } from "./utils/shuffle";
 import { cards } from "./data";
 import { createElement } from "./generateMarkup";
 import { saveScore } from "./scores";
+import pattern from "../assets/pattern.webp";
 
 function createCard({ id, src }) {
   const card = document.createElement("li");
@@ -18,7 +19,7 @@ function createCard({ id, src }) {
 
   const cover = document.createElement("img");
   cover.classList.add("game__cover");
-  cover.src = "/src/assets/pattern.webp";
+  cover.src = pattern;
   cover.alt = "card front side";
 
   const image = document.createElement("img");

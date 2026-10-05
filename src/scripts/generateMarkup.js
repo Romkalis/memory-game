@@ -32,7 +32,6 @@ function createHeader() {
   return header;
 }
 
-// содержимое main (игра или таблица) рендерится в game.js / scores.js
 function createMain() {
   return createElement("main", ["game", "container"]);
 }

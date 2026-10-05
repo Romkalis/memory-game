@@ -2,6 +2,8 @@ import { defineConfig } from 'vite'
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
 
 export default defineConfig({
+  // относительные пути — сборка работает из любой папки (в т.ч. GitHub Pages /repo-name/)
+  base: './',
   plugins: [
     ViteImageOptimizer({
       png: { quality: 82, compressionLevel: 9, effort: 10 },

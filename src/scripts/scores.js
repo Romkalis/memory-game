@@ -60,15 +60,23 @@ function createScoresTable() {
 }
 
 // таблица открывается в модалке поверх игры, игра под ней не сбрасывается
-export function openScores() {
+// onNewGame передаётся из main.js, чтобы не было циклического импорта с game.js
+export function openScores(onNewGame) {
   const modal = createElement("dialog", ["modal"]);
   const content = createElement("div", ["modal__content"]);
-  const closeBtn = createElement("button", ["modal__close"], "Close");
+  const buttons = createElement("div", ["modal__buttons"]);
+  const startBtn = createElement("button", ["modal__btn"], "Start Now");
+  const closeBtn = createElement("button", ["modal__btn"], "Close");
 
-  content.append(createScoresTable(), closeBtn);
+  buttons.append(startBtn, closeBtn);
+  content.append(createScoresTable(), buttons);
   modal.append(content);
   document.body.append(modal);
 
+  startBtn.addEventListener("click", () => {
+    onNewGame();
+    modal.close();
+  });
   closeBtn.addEventListener("click", () => modal.close());
   // клик по затемнению вокруг окна
   modal.addEventListener("click", (e) => {

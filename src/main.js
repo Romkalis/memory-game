@@ -5,7 +5,9 @@ import { openScores } from './scripts/scores.js'
 
 const main = document.querySelector('main')
 
-document.querySelector('.start').addEventListener('click', () => renderGame(main))
-document.querySelector('.scores').addEventListener('click', openScores)
+const startGame = () => renderGame(main)
+
+document.querySelector('.start').addEventListener('click', startGame)
+document.querySelector('.scores').addEventListener('click', () => openScores(startGame))
 
 renderGame(main)
