@@ -26,12 +26,12 @@ export function saveScore(score) {
   }
 }
 
-export function renderScores(main) {
-  const scores = getScores().sort((a, b) => b.score - a.score);
+function createScoresTable() {
+  // меньше ходов — выше место
+  const scores = getScores().sort((a, b) => a.score - b.score);
 
   if (!scores.length) {
-    main.replaceChildren(createElement("p", ["scores__empty"], "No results yet"));
-    return;
+    return createElement("p", ["scores__empty"], "No results yet");
   }
 
   const table = createElement("table", ["scores"]);
@@ -56,5 +56,26 @@ export function renderScores(main) {
   });
 
   table.append(head, body);
-  main.replaceChildren(table);
+  return table;
+}
+
+// таблица открывается в модалке поверх игры, игра под ней не сбрасывается
+export function openScores() {
+  const modal = createElement("dialog", ["modal"]);
+  const content = createElement("div", ["modal__content"]);
+  const closeBtn = createElement("button", ["modal__close"], "Close");
+
+  content.append(createScoresTable(), closeBtn);
+  modal.append(content);
+  document.body.append(modal);
+
+  closeBtn.addEventListener("click", () => modal.close());
+  // клик по затемнению вокруг окна
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) modal.close();
+  });
+  // close срабатывает и на кнопку, и на Esc — убираем модалку из DOM
+  modal.addEventListener("close", () => modal.remove());
+
+  modal.showModal();
 }
