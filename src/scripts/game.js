@@ -62,10 +62,12 @@ export function renderGame(main) {
 
     card.classList.add("open");
     openedCards.push(card);
-    counter++;
-    score.textContent = `Score: ${counter}`;
 
     if (openedCards.length < 2) return;
+
+    // ход = открыты две карточки, совпали они или нет
+    counter++;
+    score.textContent = `Score: ${counter}`;
 
     const [first, second] = openedCards;
 
