@@ -1,10 +1,7 @@
 import { shuffle } from "./utils/shuffle";
 import { cards } from "./data";
-
-const pairs = shuffle([...cards, ...cards]);
-const grid = document.querySelector(".game__grid");
-
-grid.replaceChildren(...pairs.map(createCard));
+import { createElement } from "./generateMarkup";
+import { saveScore } from "./scores";
 
 function createCard({ id, src }) {
   const card = document.createElement("li");
@@ -34,69 +31,66 @@ function createCard({ id, src }) {
   return card;
 }
 
-let openedCards = [];
-let findedPair = 0;
-let counter = 0;
-let isLocked = false;
 let closeTimer = null;
 
-const score = document.querySelector(".score__counter");
-const findedPairs = document.querySelector(".score__win");
-
-grid.addEventListener("click", (e) => {
-  const card = e.target.closest(".game__card");
-
-  // клик мимо карточки, по уже открытой/найденной или пока закрываются две неверные
-  if (!card || isLocked) return;
-  if (card.classList.contains("open") || card.classList.contains("finded")) return;
-
-  card.classList.add("open");
-  openedCards.push(card);
-  counter++;
-  score.textContent = `Score: ${counter}`;
-
-  if (openedCards.length < 2) return;
-
-  const [first, second] = openedCards;
-
-  if (first.dataset.pairId === second.dataset.pairId) {
-    first.classList.replace("open", "finded");
-    second.classList.replace("open", "finded");
-    findedPair++;
-    findedPairs.textContent = `Pairs found: ${findedPair}`;
-    openedCards = [];
-    return;
-  }
-
-  // не совпали — даём посмотреть и закрываем
-  isLocked = true;
-  closeTimer = setTimeout(() => {
-    clearAllCards();
-    openedCards = [];
-    isLocked = false;
-  }, 1000);
-});
-
-function clearAllCards() {
-  grid
-    .querySelectorAll(".open")
-    .forEach((card) => card.classList.remove("open"));
-}
-
-// запуск\перезапуск игры
-const startBtn = document.querySelector(".start");
-startBtn.addEventListener("click", () => startGame());
-
-function startGame() {
+// каждый вызов строит новую перемешанную игру внутри main
+export function renderGame(main) {
   clearTimeout(closeTimer);
-  isLocked = false;
-  clearAllCards();
-  grid
-    .querySelectorAll(".finded")
-    .forEach((card) => card.classList.remove("finded"));
-  openedCards = [];
-  findedPair = 0;
-  counter = 0;
-  score.textContent = `Score: ${counter}`;
-  findedPairs.textContent = `Pairs found: ${findedPair}`;
+
+  let openedCards = [];
+  let findedPair = 0;
+  let counter = 0;
+  let isLocked = false;
+
+  const scoreBar = createElement("p", ["score"]);
+  const score = createElement("span", ["score__counter"], "Score: 0");
+  const findedPairs = createElement("span", ["score__win"], "Pairs found: 0");
+  scoreBar.append(score, findedPairs);
+
+  const grid = createElement("ul", ["game__grid"]);
+  const pairs = shuffle([...cards, ...cards]);
+  grid.append(...pairs.map(createCard));
+
+  main.replaceChildren(scoreBar, grid);
+
+  grid.addEventListener("click", (e) => {
+    const card = e.target.closest(".game__card");
+
+    // клик мимо карточки, по уже открытой/найденной или пока закрываются две неверные
+    if (!card || isLocked) return;
+    if (card.classList.contains("open") || card.classList.contains("finded")) return;
+
+    card.classList.add("open");
+    openedCards.push(card);
+    counter++;
+    score.textContent = `Score: ${counter}`;
+
+    if (openedCards.length < 2) return;
+
+    const [first, second] = openedCards;
+
+    if (first.dataset.pairId === second.dataset.pairId) {
+      first.classList.replace("open", "finded");
+      second.classList.replace("open", "finded");
+      findedPair++;
+      findedPairs.textContent = `Pairs found: ${findedPair}`;
+      openedCards = [];
+
+      // всё открыто — игра закончена
+      if (findedPair === cards.length) {
+        saveScore(counter);
+        findedPairs.textContent = `You win! Pairs found: ${findedPair}`;
+      }
+      return;
+    }
+
+    // не совпали — даём посмотреть и закрываем
+    isLocked = true;
+    closeTimer = setTimeout(() => {
+      first.classList.remove("open");
+      second.classList.remove("open");
+      openedCards = [];
+      isLocked = false;
+    }, 1000);
+  });
 }

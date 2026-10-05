@@ -28,7 +28,7 @@
     cursor: pointer;
 
     position: relative;
-    transition: transform 0.6s;
+    transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.26, 1.55);
     transform-style: preserve-3d;
 }
 
@@ -46,7 +46,7 @@
 }
 
 .game__card--back {
-        transition: all 0.5s ease;
+    transition: all 0.5s ease-in-out;
 
     background-color: #fff;
     opacity: 0;

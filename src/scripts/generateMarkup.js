@@ -1,6 +1,6 @@
 import logo from "../assets/logo.svg";
 
-function createElement(tag, classes = [], text = "") {
+export function createElement(tag, classes = [], text = "") {
   const element = document.createElement(tag);
   element.classList.add(...classes);
   if (text) element.textContent = text;
@@ -18,9 +18,12 @@ function createHeader() {
   img.height = 50;
 
   const list = createElement("ul", ["header__list"]);
-  ["Start Now", "Scores"].forEach((label) => {
+  [
+    ["Start Now", "start"],
+    ["Scores", "scores"],
+  ].forEach(([label, className]) => {
     const item = createElement("li", ["header__item"]);
-    item.append(createElement("button", ["header__link", "start"], label));
+    item.append(createElement("button", ["header__link", className], label));
     list.append(item);
   });
 
@@ -29,19 +32,9 @@ function createHeader() {
   return header;
 }
 
+// содержимое main (игра или таблица) рендерится в game.js / scores.js
 function createMain() {
-  const main = createElement("main", ["game", "container"]);
-
-  const score = createElement("p", ["score"]);
-  score.append(
-    createElement("span", ["score__counter"], "Score: 0"),
-    createElement("span", ["score__win"], "Pairs found: 0"),
-  );
-
-  const grid = createElement("ul", ["game__grid"]);
-
-  main.append(score, grid);
-  return main;
+  return createElement("main", ["game", "container"]);
 }
 
 function createFooter() {
