@@ -1,0 +1,87 @@
+.game.container {
+    margin-bottom: 20px;
+}
+
+.game__grid {
+    padding: 0;
+    margin: auto;
+    aspect-ratio: 1;
+    height: 100%;
+    max-height: 80vh;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 5px;
+    perspective: 1200px;
+ }
+
+
+
+.game__card {
+    max-width: 100%;
+    border: 2px solid black;
+    border-radius: 5px;
+    overflow: hidden;
+    aspect-ratio: 1;
+
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+
+    position: relative;
+    transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.26, 1.55);
+    transform-style: preserve-3d;
+}
+
+.game__card--front,
+.game__card--back {
+    pointer-events: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.game__card--back {
+    transition: all 0.5s ease-in-out;
+
+    background-color: #fff;
+    opacity: 0;
+    transform: rotateY(180deg);
+}
+
+.game__card.open,
+.game__card.finded {
+    transform: rotateY(180deg);
+
+    .game__card--back {
+        transition: all 0.5s ease;
+        transform: rotateY(0deg);
+        opacity: 1;
+    }
+
+    .game__pic {
+        transform: rotateY(180deg);
+    }
+}
+
+.game__pic {
+    display: block;
+    object-fit: cover;
+    object-position: center;
+    width: 80%;
+}
+
+.score {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    font-size: clamp(12px, 2vw, 16px);
+    font-weight: 700;
+    margin: 10px auto;
+    gap: 20px;
+}

@@ -1,0 +1,32 @@
+.header {
+    background: var(--bg-l);
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+}
+
+.header__list {
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    list-style: none;
+    flex-wrap: wrap;
+}
+
+.header__link {
+    border: none;
+    background: none;
+    font-weight: 700;
+    padding: 10px;
+    transition: all 0.4s ease;
+
+    &:hover {
+        transform: scale(1.1)
+    }
+}
