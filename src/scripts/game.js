@@ -37,21 +37,37 @@ function createCard({ id, src }) {
 }
 
 
-const openedCards = []
+let openedCards = []
 
 grid.addEventListener('click', (e) => {
     const card = e.target;
 
+    if (openedCards.length >= 2) {
+        // тут над написать проверку - если карточки совпали то исключаем их из кликомании
+
+        if (openedCards[0] === openedCards[1]) {
+             grid.querySelectorAll('.open')
+                 .forEach( card => card.classList.add('finded'))
+        }
+
+        clearAllCards()
+        openedCards = [];
+        return
+    }
+
     if (card.classList.contains('open')) {
         card.classList.remove('open')
     } else {
-
         card.classList.add('open')
-    }
-    const cardName = card.dataset.pairId;
-
-    if (openedCards.length < 2) {
+        
+        const cardName = card.dataset.pairId;
         openedCards.push(cardName)
+        console.log(openedCards)
     }
 })
+
+function clearAllCards () {
+    grid.querySelectorAll('.open')
+        .forEach( card => card.classList.remove('open'))
+}
 
