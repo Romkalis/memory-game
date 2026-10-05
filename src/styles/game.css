@@ -1,4 +1,6 @@
-.game {}
+.game.container {
+    margin-bottom: 20px;
+}
 
 .game__grid {
     padding: 0;
@@ -7,7 +9,7 @@
     height: 100%;
     max-height: 80vh;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 5px;
     perspective: 1200px;
  }
@@ -71,4 +73,15 @@
     object-fit: cover;
     object-position: center;
     width: 80%;
+}
+
+.score {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    font-size: clamp(12px, 2vw, 16px);
+    font-weight: 700;
+    margin: 10px auto;
+    gap: 20px;
 }

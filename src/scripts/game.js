@@ -11,20 +11,18 @@ function createCard({ id, src }) {
   card.classList.add("game__card");
   card.classList.add("close");
   card.dataset.pairId = id;
-  
 
-  const front = document.createElement('div')
+  const front = document.createElement("div");
   front.classList.add("game__card--front");
-  const back = document.createElement('div')
+  const back = document.createElement("div");
   back.classList.add("game__card--back");
-  card.append(front)
-  card.append(back)
-
+  card.append(front);
+  card.append(back);
 
   const cover = document.createElement("img");
   cover.classList.add("game__cover");
-  cover.src = '/src/assets/pattern.webp';
-  cover.alt = 'card front side';
+  cover.src = "/src/assets/pattern.webp";
+  cover.alt = "card front side";
 
   const image = document.createElement("img");
   image.classList.add("game__pic");
@@ -36,38 +34,69 @@ function createCard({ id, src }) {
   return card;
 }
 
+let openedCards = [];
+let findedPair = 0;
+let counter = 0;
+let isLocked = false;
+let closeTimer = null;
 
-let openedCards = []
+const score = document.querySelector(".score__counter");
+const findedPairs = document.querySelector(".score__win");
 
-grid.addEventListener('click', (e) => {
-    const card = e.target;
+grid.addEventListener("click", (e) => {
+  const card = e.target.closest(".game__card");
 
-    if (openedCards.length >= 2) {
-        // тут над написать проверку - если карточки совпали то исключаем их из кликомании
+  // клик мимо карточки, по уже открытой/найденной или пока закрываются две неверные
+  if (!card || isLocked) return;
+  if (card.classList.contains("open") || card.classList.contains("finded")) return;
 
-        if (openedCards[0] === openedCards[1]) {
-             grid.querySelectorAll('.open')
-                 .forEach( card => card.classList.add('finded'))
-        }
+  card.classList.add("open");
+  openedCards.push(card);
+  counter++;
+  score.textContent = `Score: ${counter}`;
 
-        clearAllCards()
-        openedCards = [];
-        return
-    }
+  if (openedCards.length < 2) return;
 
-    if (card.classList.contains('open')) {
-        card.classList.remove('open')
-    } else {
-        card.classList.add('open')
-        
-        const cardName = card.dataset.pairId;
-        openedCards.push(cardName)
-        console.log(openedCards)
-    }
-})
+  const [first, second] = openedCards;
 
-function clearAllCards () {
-    grid.querySelectorAll('.open')
-        .forEach( card => card.classList.remove('open'))
+  if (first.dataset.pairId === second.dataset.pairId) {
+    first.classList.replace("open", "finded");
+    second.classList.replace("open", "finded");
+    findedPair++;
+    findedPairs.textContent = `Pairs found: ${findedPair}`;
+    openedCards = [];
+    return;
+  }
+
+  // не совпали — даём посмотреть и закрываем
+  isLocked = true;
+  closeTimer = setTimeout(() => {
+    clearAllCards();
+    openedCards = [];
+    isLocked = false;
+  }, 1000);
+});
+
+function clearAllCards() {
+  grid
+    .querySelectorAll(".open")
+    .forEach((card) => card.classList.remove("open"));
 }
 
+// запуск\перезапуск игры
+const startBtn = document.querySelector(".start");
+startBtn.addEventListener("click", () => startGame());
+
+function startGame() {
+  clearTimeout(closeTimer);
+  isLocked = false;
+  clearAllCards();
+  grid
+    .querySelectorAll(".finded")
+    .forEach((card) => card.classList.remove("finded"));
+  openedCards = [];
+  findedPair = 0;
+  counter = 0;
+  score.textContent = `Score: ${counter}`;
+  findedPairs.textContent = `Pairs found: ${findedPair}`;
+}

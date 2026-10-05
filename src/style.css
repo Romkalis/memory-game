@@ -23,7 +23,6 @@
   color-scheme: light;
   color: var(--text);
   background: var(--bg);
-  box-sizing: border-box;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -32,6 +31,12 @@
   @media (max-width: 1024px) {
     font-size: 16px;
   }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 body {
